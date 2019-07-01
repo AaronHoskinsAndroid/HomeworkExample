@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="examples.aaronhoskins.com.homeworkexample">
+    <uses-permission android:name="key.to.gate.of.the.zoo"/>
+    <permission
+        android:name="key.to.gate.of.the.zoo"
+        android:protectionLevel="normal"/>
 
     <application
         android:allowBackup="true"
@@ -19,6 +23,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:authorities="examples.aaronhoskins.com.homeworkexample.model.datasource.local.providers"
+            android:name=".model.datasource.local.providers.ZooAnimalContentProvider"
+            android:permission="key.to.gate.of.the.zoo"/>
+        <!-- Read/Write permission -->
+        <!-- android:readPermission  ,  android:writePermission -->
+
     </application>
 
 </manifest>
