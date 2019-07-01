@@ -23,13 +23,17 @@ public class ZooDatabaseContract {
     }
 
     public static String getByCatagoryQuery(String category) {
-        return String.format("%s WHERE %s = \"%s\"",
+        return String.format("%s WHERE %s = \'%s\'",
                 SELECT_ALL_QUERY, COLUMN_CATEGORY, category);
     }
 
     public static String getBySpeciesQuery(String species) {
         return String.format("%s WHERE %s = \"%s\"",
                 SELECT_ALL_QUERY, COLUMN_SPECIES, species);
+    }
+
+    public static String whereClause(String species) {
+        return String.format(Locale.US, "%s = \"%s\"", COLUMN_SPECIES, species);
     }
 
 

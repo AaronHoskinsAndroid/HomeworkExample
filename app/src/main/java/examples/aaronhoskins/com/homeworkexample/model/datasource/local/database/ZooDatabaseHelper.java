@@ -20,6 +20,7 @@ import static examples.aaronhoskins.com.homeworkexample.model.datasource.local.d
 import static examples.aaronhoskins.com.homeworkexample.model.datasource.local.database.ZooDatabaseContract.DATABASE_VERSION;
 import static examples.aaronhoskins.com.homeworkexample.model.datasource.local.database.ZooDatabaseContract.DROP_QUERY;
 import static examples.aaronhoskins.com.homeworkexample.model.datasource.local.database.ZooDatabaseContract.TABLE_NAME;
+import static examples.aaronhoskins.com.homeworkexample.model.datasource.local.database.ZooDatabaseContract.whereClause;
 
 public class ZooDatabaseHelper extends SQLiteOpenHelper {
     public ZooDatabaseHelper(Context context) {
@@ -112,5 +113,25 @@ public class ZooDatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         database.close();
         return animal;
+    }
+
+    public void deleteSpeciesFromDatabase(String species) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        database.delete(TABLE_NAME, whereClause(species), null);
+        database.close();
+    }
+
+    public void updateZooAnimal(ZooAnimal animal) {
+        SQLiteDatabase database = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_SPECIES, animal.getmSpecies());
+        contentValues.put(COLUMN_CATEGORY, animal.getmCategory());
+        contentValues.put(COLUMN_DIET, animal.getmDiet());
+        contentValues.put(COLUMN_IMAGE_URL, animal.getmImageUrl());
+        contentValues.put(COLUMN_SOUND, animal.getmSound());
+        contentValues.put(COLUMN_LIFE_EXP, animal.getmLiveExpediency());
+
+        database.update(TABLE_NAME, contentValues, whereClause(animal.getmSpecies()),null);
+        database.close();
     }
 }
