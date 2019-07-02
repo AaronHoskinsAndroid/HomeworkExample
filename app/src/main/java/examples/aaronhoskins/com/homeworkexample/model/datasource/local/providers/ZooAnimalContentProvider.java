@@ -1,6 +1,7 @@
 package examples.aaronhoskins.com.homeworkexample.model.datasource.local.providers;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -27,7 +28,34 @@ public class ZooAnimalContentProvider extends ContentProvider {
     @Override
     public Cursor query
             (Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        return null;
+        final SQLiteDatabase db = zooDatabaseHelper.getWritableDatabase();
+        Cursor retCursor = null;
+        switch(uriMatcher.match(uri)) {
+            case ZOO_ANIMAL:
+                retCursor = db.query(
+                        TABLE_NAME,
+                        projection,
+                        selection,
+                        selectionArgs,
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+            case ZOO_ANIMAL_ITEM:
+                long _id = ContentUris.parseId(uri);
+                retCursor = db.query(
+                        TABLE_NAME,
+                        projection,
+                        ZooDatabaseContract.COLUMN_SPECIES + " = ?",
+                        new String[]{String.valueOf(_id)},
+                        null,
+                        null,
+                        sortOrder
+                );
+                break;
+        }
+        return retCursor;
     }
 
     @Override
