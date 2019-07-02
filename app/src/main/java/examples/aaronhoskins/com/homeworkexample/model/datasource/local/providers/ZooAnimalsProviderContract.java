@@ -9,15 +9,15 @@ public class ZooAnimalsProviderContract implements BaseColumns {
             "examples.aaronhoskins.com.homeworkexample.model.datasource.local.providers";
     public static final Uri CONTENT_URI =
             Uri.parse(String.format("content://%s", CONTENT_AUTHORITY));
-    public static final String PATH_ZOOANIMAL = "zoo_animals";
+    public static final String PATH_ZOO_ANIMAL = "zoo_animals";
 
     public static class ZooAnimalsEntry implements BaseColumns {
         public static final Uri ZOO_ANIMAL_CONTENT_URI =
-                CONTENT_URI.buildUpon().appendPath(PATH_ZOOANIMAL).build();
+                CONTENT_URI.buildUpon().appendPath(PATH_ZOO_ANIMAL).build();
         public static final String CONTENT_TYPE =
-                "vnd.android.cursor.dir" + ZOO_ANIMAL_CONTENT_URI + "/" + PATH_ZOOANIMAL;
+                "vnd.android.cursor.dir" + ZOO_ANIMAL_CONTENT_URI + "/" + PATH_ZOO_ANIMAL;
         public static final String CONTENT_ITEM_TYPE =
-                "vnd.android.cursor.item" + ZOO_ANIMAL_CONTENT_URI + "/" + PATH_ZOOANIMAL;
+                "vnd.android.cursor.item" + ZOO_ANIMAL_CONTENT_URI + "/" + PATH_ZOO_ANIMAL;
         public static final Uri buildZooAnimalUri(long id) {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }

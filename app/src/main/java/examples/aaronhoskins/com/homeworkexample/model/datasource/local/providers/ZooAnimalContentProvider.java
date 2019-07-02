@@ -2,16 +2,21 @@ package examples.aaronhoskins.com.homeworkexample.model.datasource.local.provide
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
+import examples.aaronhoskins.com.homeworkexample.model.datasource.local.database.ZooDatabaseContract;
 import examples.aaronhoskins.com.homeworkexample.model.datasource.local.database.ZooDatabaseHelper;
 
 import static examples.aaronhoskins.com.homeworkexample.model.datasource.local.database.ZooDatabaseContract.TABLE_NAME;
 
 public class ZooAnimalContentProvider extends ContentProvider {
+    public static final int ZOO_ANIMAL = 100;
+    public static final int ZOO_ANIMAL_ITEM = 101;
     ZooDatabaseHelper zooDatabaseHelper;
+    UriMatcher uriMatcher = buildUriMatcher();
 
     @Override
     public boolean onCreate() {
@@ -27,7 +32,14 @@ public class ZooAnimalContentProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        return null;
+        switch(uriMatcher.match(uri)){
+            case ZOO_ANIMAL:
+                return ZooAnimalsProviderContract.ZooAnimalsEntry.CONTENT_TYPE;
+            case ZOO_ANIMAL_ITEM:
+                return ZooAnimalsProviderContract.ZooAnimalsEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new UnsupportedOperationException("Unknown uri: " + uri);
+        }
     }
 
     @Override
@@ -59,5 +71,15 @@ public class ZooAnimalContentProvider extends ContentProvider {
                 database.update(TABLE_NAME, contentValues, whereClause, whereArgs);
         database.close();
         return itemsUpdated;
+    }
+
+    public static UriMatcher buildUriMatcher(){
+        String content = ZooAnimalsProviderContract.CONTENT_AUTHORITY;
+        // All paths to the UriMatcher have a corresponding code to return
+        // when a match is found (the ints above).
+        UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
+        matcher.addURI(content, ZooAnimalsProviderContract.PATH_ZOO_ANIMAL, ZOO_ANIMAL);
+        matcher.addURI(content, ZooAnimalsProviderContract.PATH_ZOO_ANIMAL + "/#", ZOO_ANIMAL_ITEM);
+        return matcher;
     }
 }
